@@ -10,12 +10,21 @@ import com.example.stcservice.repo.OrderRepository;
 import com.example.stcservice.repo.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+@Service // spring annotation - Bean
+//@Component // spring annotation
+//@Configuration // spring annotation
+//@Repository // spring annotation
+// @Autowired injection - constructor injection - setter injection
+// @Qualifier //
+// @Bean
 @AllArgsConstructor
 public class EcommerceService {
 

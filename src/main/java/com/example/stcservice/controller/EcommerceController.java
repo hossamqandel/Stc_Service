@@ -8,11 +8,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.annotation.ApplicationScope;
+import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/api")
+@RestController // Tell spring this is a rest controller so it can handle some nessasry work
+@RequestMapping("/api/v1") // You may need to add api version
 @AllArgsConstructor
 public class EcommerceController {
 
@@ -26,12 +28,12 @@ public class EcommerceController {
         return ResponseEntity.ok(service.getAllProducts());
     }
 
-    @PostMapping("/product")
+    @PostMapping("/product") // Should be products
     public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductDTO product) {
-        return ResponseEntity.ok(service.addProduct(product));
+        return ResponseEntity.ok(service.addProduct(product)); // should return created http status - 201
     }
 
-    @GetMapping("/products/category/{id}")
+    @GetMapping("/categories/{categoryId}/products")
     public ResponseEntity<List<ProductDTO>> getProductsByCategory(@PathVariable Long id) {
         if (service.getProductsByCategory(id).isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -47,9 +49,9 @@ public class EcommerceController {
         return ResponseEntity.ok(service.getAllCategories());
     }
 
-    @PostMapping("/category")
+    @PostMapping("/category") // should be categories
     public ResponseEntity<CategoryDTO> addCategory(@RequestBody CategoryDTO category) {
-        return ResponseEntity.ok(service.addCategory(category));
+        return ResponseEntity.ok(service.addCategory(category)); // should return created http status - 201
     }
 
     @GetMapping("/orders")

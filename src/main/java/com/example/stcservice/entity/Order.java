@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
-@Entity()
+@Entity
 @Table(name = "order_transaction")
-@AllArgsConstructor
-@NoArgsConstructor
+//@AllArgsConstructor
+//@NoArgsConstructor
 @Data
 public class Order {
 
