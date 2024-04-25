@@ -16,22 +16,20 @@ public class Product {
     private Long id;
 
     private String name;
-
     private double price;
-
     @Column(name = "category_id")
     private Long categoryId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id") // is a column inside Product table
-    private Category category;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "category_id") // is a column inside Product table
+//    private Category category;
 
-    private String mobile; // country code + mobile number
+  //  private String mobile; // country code + mobile number
 
-    @Transient // Use this field only in class level - This field is not mapped with the database table
-    private String countryCode;
-
-    public String getCountryCode() {
-        return mobile.substring(0,3);
-    }
+//    @Transient // Use this field only in class level - This field is not mapped with the database table
+//    private String countryCode;
+//
+//    public String getCountryCode() {
+//        return mobile.substring(0,3);
+//    }
 }

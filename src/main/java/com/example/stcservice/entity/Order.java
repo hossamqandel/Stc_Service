@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 import java.util.Set;
 
 @Entity
-@Table(name = "order_transaction")
-//@AllArgsConstructor
-//@NoArgsConstructor
+@Table(name = "\"Order\"")
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class Order {
 
