@@ -1,18 +1,18 @@
 package com.example.stcservice.configuration;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
 
 @Configuration
 public class AppConfiguration { // Bean
 
     @Bean
-//    @Scope("prototype")
-    public ModelMapper createModelMapperBean() {
-        System.out.println("Create new ModelMapper object");
-        return new ModelMapper();
+    public ModelMapper createModelMapper() {
+        ModelMapper dtoMapper = new ModelMapper();
+        dtoMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        return dtoMapper;
     }
 
     // 1- Managed by spring container/context

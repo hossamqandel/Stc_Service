@@ -10,12 +10,10 @@ import com.example.stcservice.repo.OrderRepository;
 import com.example.stcservice.repo.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service // spring annotation - Bean
@@ -34,7 +32,17 @@ public class EcommerceService {
     private final ModelMapper modelMapper;
 
     public List<ProductDTO> getAllProducts() {
+        List<Product> products = productRepository.findAll();
+        return products
+                .stream()
+                .map(product -> modelMapper.map(product, ProductDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<ProductDTO> getSearchProducts(String keyword) {
+        String asLowerCase = keyword.toLowerCase();
         return productRepository.findAll().stream()
+                .filter(product -> product.getName().toLowerCase().contains(asLowerCase))
                 .map(product -> modelMapper.map(product, ProductDTO.class))
                 .collect(Collectors.toList());
     }
@@ -42,22 +50,63 @@ public class EcommerceService {
     public List<ProductDTO> getProductsByCategory(Long categoryId) {
         return productRepository.findByCategoryId(categoryId)
                 .stream()
-                .map(product -> modelMapper.map(product, ProductDTO.class))
+                .map(product -> {
+                    ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
+//                    productDTO.setCategoryId(product.getCategoryId());
+//                    productDTO.setCategoryName(product.getName());
+                    return productDTO;
+                })
                 .collect(Collectors.toList());
     }
 
     public ProductDTO addProduct(ProductDTO productDTO){
-        Product productEntity = productRepository.save(modelMapper.map(productDTO, Product.class));
+        Product productEntity = modelMapper.map(productDTO, Product.class);
+//        Category category = new Category();
+//        category.setId(productDTO.getCategoryId());
+//        productEntity.setCategory(category);
+        productEntity = productRepository.save(productEntity);
         return modelMapper.map(productEntity, ProductDTO.class);
     }
 
+    public boolean deleteProduct(Long id){
+        if (!productRepository.existsById(id)){
+            return false;
+        }
+        productRepository.deleteById(id);
+        return true;
+    }
+
+    public Product getProductById(Long id){
+        Product product = productRepository.findById(id);
+        return product;
+        //return modelMapper.map(product, ProductDTO.class);
+        //throw new NoSuchElementException("Product not found");
+    }
+
+    public ProductDTO updateProduct(ProductDTO productDTO){
+        if (productRepository.existsById(productDTO.getId())) {
+            return modelMapper.map(
+                    productRepository.save(modelMapper.map(productDTO, Product.class)),
+                    ProductDTO.class
+            );
+        }
+        throw new NoSuchElementException("Product not found");
+    }
+
     public List<CategoryDTO> getAllCategories() {
-        return categoryRepository.findAll().stream()
+        return categoryRepository.findAll()
+                .stream()
                 .map(category -> modelMapper.map(category, CategoryDTO.class))
                 .collect(Collectors.toList());
     }
 
-    public CategoryDTO addCategory(CategoryDTO categoryDTO){
+    public CategoryDTO addCategory(CategoryDTO categoryDTO) {
+        boolean isExistCategory = categoryRepository.findAll()
+                .stream()
+                .anyMatch(category -> category.getName().equalsIgnoreCase(categoryDTO.getName()));
+
+        if (isExistCategory) return null;
+
         Category categoryEntity = categoryRepository.save(modelMapper.map(categoryDTO, Category.class));
         return modelMapper.map(categoryEntity, CategoryDTO.class);
     }

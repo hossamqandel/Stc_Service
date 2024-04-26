@@ -20,9 +20,9 @@ public class Product {
     @Column(name = "category_id")
     private Long categoryId;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "category_id") // is a column inside Product table
-//    private Category category;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", insertable = false, updatable = false) // is a column inside Product table
+    private Category category;
 
   //  private String mobile; // country code + mobile number
 

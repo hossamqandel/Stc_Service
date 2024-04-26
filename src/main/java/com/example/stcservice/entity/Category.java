@@ -20,8 +20,7 @@ public class Category {
 
     // Category has many products 1 ---> *
 //    @OneToMany(mappedBy = "category") // category is the variable name inside Product class
-    @OneToMany // category is the variable name inside Product class
-    @JoinColumn(name = "category_id")
+    @OneToMany(mappedBy = "category") // category is the variable name inside Product class
     private Set<Product> products;
 
     // Bi-directional mapping
